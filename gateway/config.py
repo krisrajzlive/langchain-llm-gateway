@@ -27,7 +27,6 @@ except AttributeError:
     pass
 
 DEFAULT_MODEL = "openai:gpt-4o-mini"
-FALLBACK_MODEL = "anthropic:claude-3-5-haiku-latest"
 
 
 def get_model(model: str = DEFAULT_MODEL, **kwargs) -> BaseChatModel:
