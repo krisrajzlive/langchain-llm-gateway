@@ -18,6 +18,10 @@ DEMOS = {
     "7": ("Tool calling", "demos.demo_07_tool_calling"),
     "8": ("Runtime-configurable model/params", "demos.demo_08_configurable_alternatives"),
     "9": ("Hugging Face Inference Providers (free gateway)", "demos.demo_09_huggingface_gateway"),
+    "10": ("Spend limit (budget cap via callback)", "demos.demo_10_spend_limit"),
+    "11": ("Call-count rate limit (ModelCallLimitMiddleware)", "demos.demo_11_call_rate_limits"),
+    "12": ("Data policy: PII redaction/masking/blocking", "demos.demo_12_pii_data_policy"),
+    "13": ("Guardrail: custom blocked-topic middleware", "demos.demo_13_content_guardrail"),
 }
 
 

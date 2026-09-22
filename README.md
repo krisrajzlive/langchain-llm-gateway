@@ -18,9 +18,20 @@ same responsibilities a dedicated LLM gateway/proxy would own.
 | 7 | [`demos/demo_07_tool_calling.py`](demos/demo_07_tool_calling.py) | Tool calling with `bind_tools` |
 | 8 | [`demos/demo_08_configurable_alternatives.py`](demos/demo_08_configurable_alternatives.py) | Runtime-selectable model/params via `configurable_fields` / `configurable_alternatives` |
 | 9 | [`demos/demo_09_huggingface_gateway.py`](demos/demo_09_huggingface_gateway.py) | Free hosted gateway: [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers) via an OpenAI-compatible endpoint |
+| 10 | [`demos/demo_10_spend_limit.py`](demos/demo_10_spend_limit.py) | Spend limit: a budget cap enforced via a custom callback that prices token usage |
+| 11 | [`demos/demo_11_call_rate_limits.py`](demos/demo_11_call_rate_limits.py) | Rate/call limits at the agent level via `ModelCallLimitMiddleware` |
+| 12 | [`demos/demo_12_pii_data_policy.py`](demos/demo_12_pii_data_policy.py) | Data policy: PII detection with `redact`/`mask`/`block` strategies via `PIIMiddleware` |
+| 13 | [`demos/demo_13_content_guardrail.py`](demos/demo_13_content_guardrail.py) | Guardrail: a custom `AgentMiddleware` that blocks disallowed topics before the model is ever called |
 
 The `gateway/` package holds the shared `get_model()` helper (a thin wrapper
 around `init_chat_model`) that every demo builds on.
+
+Demos 10-13 cover the governance/operator side of a gateway (spend limits,
+rate limits, data policy, guardrails), built on `langchain.agents` and
+`langchain.agents.middleware`. 11 and 12 use official, built-in middleware
+(`ModelCallLimitMiddleware`, `PIIMiddleware`); 10 and 13 show how to build a
+custom callback/middleware for policies LangChain doesn't ship out of the
+box (dollar-denominated budgets, arbitrary content guardrails).
 
 ## Setup
 
