@@ -17,6 +17,7 @@ same responsibilities a dedicated LLM gateway/proxy would own.
 | 6 | [`demos/demo_06_structured_output.py`](demos/demo_06_structured_output.py) | Schema-constrained output with `with_structured_output` |
 | 7 | [`demos/demo_07_tool_calling.py`](demos/demo_07_tool_calling.py) | Tool calling with `bind_tools` |
 | 8 | [`demos/demo_08_configurable_alternatives.py`](demos/demo_08_configurable_alternatives.py) | Runtime-selectable model/params via `configurable_fields` / `configurable_alternatives` |
+| 9 | [`demos/demo_09_huggingface_gateway.py`](demos/demo_09_huggingface_gateway.py) | Free hosted gateway: [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers) via an OpenAI-compatible endpoint |
 
 The `gateway/` package holds the shared `get_model()` helper (a thin wrapper
 around `init_chat_model`) that every demo builds on.
@@ -40,7 +41,25 @@ cp .env.example .env
 ```
 OPENAI_API_KEY=
 ANTHROPIC_API_KEY=
+
+# Hugging Face Inference Providers token (free tier) - used by demo 9
+HUGGINGFACE_API_KEY=
+
+# Optional: enable LangSmith tracing for all demos
+LANGSMITH_API_KEY=
+LANGSMITH_TRACING=true
+LANGSMITH_PROJECT=langchain-llm-gateway
 ```
+
+`ANTHROPIC_API_KEY` is only needed for demos that touch Anthropic models
+(2 and 8's alternative branch); the rest run on OpenAI alone.
+`HUGGINGFACE_API_KEY` (a free Hugging Face access token — Settings → Access
+Tokens on huggingface.co) is only needed for demo 9, which runs against the
+free, OpenAI-compatible [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers)
+gateway instead of a paid provider. If `LANGSMITH_API_KEY` is set, every
+demo's runs are automatically traced to the `langchain-llm-gateway` project
+in LangSmith — useful for inspecting fallbacks, retries, and tool-calling
+steps.
 
 ## Running the demos
 

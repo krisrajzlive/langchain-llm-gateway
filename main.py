@@ -17,6 +17,7 @@ DEMOS = {
     "6": ("Structured output", "demos.demo_06_structured_output"),
     "7": ("Tool calling", "demos.demo_07_tool_calling"),
     "8": ("Runtime-configurable model/params", "demos.demo_08_configurable_alternatives"),
+    "9": ("Hugging Face Inference Providers (free gateway)", "demos.demo_09_huggingface_gateway"),
 }
 
 
