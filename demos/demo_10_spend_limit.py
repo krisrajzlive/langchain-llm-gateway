@@ -20,7 +20,7 @@ PRICE_PER_1K_OUTPUT = 0.0006
 class BudgetExceededError(Exception):
     pass
 
-
+# A callback that tracks cumulative spend and raises if it exceeds a budget.
 class SpendLimitCallback(BaseCallbackHandler):
     raise_error = True  # let BudgetExceededError propagate out of model.invoke()
 
@@ -28,6 +28,7 @@ class SpendLimitCallback(BaseCallbackHandler):
         self.budget_usd = budget_usd
         self.spent_usd = 0.0
 
+    # This is the hook point that LangSmith/observability integrations use to meter usage.
     def on_llm_end(self, response: LLMResult, **kwargs) -> None:
         usage = (response.llm_output or {}).get("token_usage", {})
         input_tokens = usage.get("prompt_tokens", 0)

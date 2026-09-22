@@ -16,7 +16,7 @@ from gateway import get_model
 
 BLOCKED_TOPICS = ["bomb", "weapon", "hack into"]
 
-
+# Middleware 
 class TopicGuardrailMiddleware(AgentMiddleware):
     @hook_config(can_jump_to=["end"])
     def before_model(self, state: AgentState, runtime: Runtime) -> dict | None:

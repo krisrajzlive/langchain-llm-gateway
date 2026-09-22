@@ -1,10 +1,10 @@
-"""Per-request effort tuning across multiple models: `reasoning_effort`.
+"""Per-request effort tuning: `reasoning_effort`, model and effort chosen interactively.
 
 Unlike demos 1/2/8/9 (routing across *different* models/providers on
-failure or by choice), this tunes each *individual* model's reasoning
-depth per request -- the same lever Claude Code's desktop app exposes as
-a model "effort" picker. Two independently-verified backends support the
-same `reasoning_effort` parameter:
+failure or by choice), this tunes an *individual* model's reasoning depth
+per request -- the same lever Claude Code's desktop app exposes as a model
+"effort" picker. Two independently-verified backends support the same
+`reasoning_effort` parameter:
 
 - OpenAI's GPT-5 family (native reasoning models; reports a precise
   `reasoning_tokens` count separate from the visible answer).
@@ -25,11 +25,11 @@ import os
 
 from gateway import get_model
 
-PROMPT = "A farmer has 17 sheep. All but 9 die. How many are left? Explain briefly."
+DEFAULT_PROMPT = "A farmer has 17 sheep. All but 9 die. How many are left? Explain briefly."
 
-MODELS = [
-    ("openai:gpt-5-mini", {}),
-    (
+MODELS = {
+    "1": ("openai:gpt-5-mini", {}),
+    "2": (
         "gpt-oss:20b",
         {
             "model_provider": "openai",
@@ -37,28 +37,51 @@ MODELS = [
             "api_key": os.environ.get("OLLAMA_API_KEY"),
         },
     ),
-]
+}
+
+EFFORTS = {"1": "low", "2": "medium", "3": "high"}
+
+
+def _choose(prompt: str, options: dict[str, str]) -> str:
+    print(prompt)
+    for key, label in options.items():
+        print(f"  {key}. {label}")
+    choice = input("> ").strip()
+    if choice not in options:
+        print(f"Unrecognized choice '{choice}', defaulting to '1'.")
+        choice = "1"
+    return choice
 
 
 def main() -> None:
-    for model_id, kwargs in MODELS:
-        model = get_model(model_id, **kwargs)
-        print(f"=== {model_id} ===")
-        for effort in ["low", "medium", "high"]:
-            response = model.invoke(PROMPT, reasoning_effort=effort)
-            usage = response.response_metadata.get("token_usage", {})
-            reasoning_tokens = (usage.get("completion_tokens_details") or {}).get(
-                "reasoning_tokens"
-            )
-            completion_tokens = usage.get("completion_tokens")
+    model_choice = _choose(
+        "Pick a model:", {k: v[0] for k, v in MODELS.items()}
+    )
+    model_id, kwargs = MODELS[model_choice]
 
-            detail = f"completion_tokens={completion_tokens}"
-            if reasoning_tokens is not None:
-                detail += f", reasoning_tokens={reasoning_tokens}"
+    effort_choice = _choose("Pick a reasoning effort:", EFFORTS)
+    effort = EFFORTS[effort_choice]
 
-            print(f"  effort={effort:6s} {detail}")
-            print(f"    -> {response.content.splitlines()[0][:100]}")
-        print()
+    custom_prompt = input(f"Prompt [default: {DEFAULT_PROMPT!r}]: ").strip()
+    user_prompt = custom_prompt or DEFAULT_PROMPT
+
+    model = get_model(model_id, **kwargs)
+    response = model.invoke(user_prompt, reasoning_effort=effort)
+
+    usage = response.response_metadata.get("token_usage", {})
+    reasoning_tokens = (usage.get("completion_tokens_details") or {}).get(
+        "reasoning_tokens"
+    )
+    completion_tokens = usage.get("completion_tokens")
+
+    detail = f"completion_tokens={completion_tokens}"
+    if reasoning_tokens is not None:
+        detail += f", reasoning_tokens={reasoning_tokens}"
+
+    print()
+    print(f"=== {model_id}, effort={effort} ===")
+    print(f"  {detail}")
+    print(f"  answer: {response.content}")
 
 
 if __name__ == "__main__":
