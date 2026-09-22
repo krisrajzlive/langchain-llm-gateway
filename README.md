@@ -10,7 +10,7 @@ same responsibilities a dedicated LLM gateway/proxy would own.
 | # | Demo | Feature |
 |---|------|---------|
 | 1 | [`demos/demo_01_basic_gateway.py`](demos/demo_01_basic_gateway.py) | Provider-agnostic init via `init_chat_model("provider:model")` |
-| 2 | [`demos/demo_02_fallbacks.py`](demos/demo_02_fallbacks.py) | Automatic provider fallback with `with_fallbacks` (OpenAI primary, Hugging Face backup) |
+| 2 | [`demos/demo_02_fallbacks.py`](demos/demo_02_fallbacks.py) | Automatic provider fallback with `with_fallbacks` (3-tier chain: OpenAI → Hugging Face → Ollama Cloud) |
 | 3 | [`demos/demo_03_retry_and_rate_limit.py`](demos/demo_03_retry_and_rate_limit.py) | Retries (`with_retry`) and client-side rate limiting (`InMemoryRateLimiter`) |
 | 4 | [`demos/demo_04_caching.py`](demos/demo_04_caching.py) | Response caching with `InMemoryCache` |
 | 5 | [`demos/demo_05_streaming.py`](demos/demo_05_streaming.py) | Token streaming, uniform across providers |
@@ -55,8 +55,12 @@ OPENAI_API_KEY=
 # Hugging Face Inference Providers token (free tier) - used by demos 2, 8, 9
 HUGGINGFACE_API_KEY=
 
-# Optional: only needed if you want to swap Hugging Face back out for a
-# paid Anthropic backend in demos 2/8
+# Ollama Cloud API key (free tier covers smaller models like gpt-oss:20b)
+# used as the final fallback tier in demo 2
+OLLAMA_API_KEY=
+
+# Optional: only needed if you want to swap Hugging Face/Ollama back out
+# for a paid Anthropic backend in demos 2/8
 ANTHROPIC_API_KEY=
 
 # Optional: enable LangSmith tracing for all demos
@@ -65,15 +69,14 @@ LANGSMITH_TRACING=true
 LANGSMITH_PROJECT=langchain-llm-gateway
 ```
 
-`OPENAI_API_KEY` and `HUGGINGFACE_API_KEY` (a free Hugging Face access
-token — Settings → Access Tokens on huggingface.co) are all you need to run
-every demo in this repo end to end; no paid Anthropic key required.
-`ANTHROPIC_API_KEY` is unused by default — it's only relevant if you edit
-demos 2/8 to route their backup/alternative branch through Anthropic
-instead of Hugging Face. If `LANGSMITH_API_KEY` is set, every demo's runs
-are automatically traced to the `langchain-llm-gateway` project in
-LangSmith — useful for inspecting fallbacks, retries, and tool-calling
-steps.
+`OPENAI_API_KEY`, `HUGGINGFACE_API_KEY` (free — Settings → Access Tokens on
+huggingface.co), and `OLLAMA_API_KEY` (free — Settings → API Keys on
+ollama.com) are all you need to run every demo in this repo end to end; no
+paid Anthropic key required. `ANTHROPIC_API_KEY` is unused by default —
+it's only relevant if you edit demos 2/8 to route a branch through
+Anthropic instead. If `LANGSMITH_API_KEY` is set, every demo's runs are
+automatically traced to the `langchain-llm-gateway` project in LangSmith —
+useful for inspecting fallbacks, retries, and tool-calling steps.
 
 ## Running the demos
 
