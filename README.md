@@ -23,6 +23,7 @@ same responsibilities a dedicated LLM gateway/proxy would own.
 | 12 | [`demos/demo_12_pii_data_policy.py`](demos/demo_12_pii_data_policy.py) | Data policy: PII detection with `redact`/`mask`/`block` strategies via `PIIMiddleware` |
 | 13 | [`demos/demo_13_content_guardrail.py`](demos/demo_13_content_guardrail.py) | Guardrail: a custom `AgentMiddleware` that blocks disallowed topics before the model is ever called |
 | 14 | [`demos/demo_14_reasoning_effort.py`](demos/demo_14_reasoning_effort.py) | Per-request effort tuning on a single model via `reasoning_effort` (`low`/`medium`/`high`) on `gpt-oss:20b` via Ollama Cloud |
+| 15 | [`demos/demo_15_callbacks.py`](demos/demo_15_callbacks.py) | LangChain's callback lifecycle (`on_chat_model_start`, `on_llm_new_token`, `on_llm_end`, `on_tool_start`/`on_tool_end`, `on_chain_start`/`on_chain_end`) -- the hook point demo 10's spend limiter is secretly built on |
 
 The `gateway/` package holds the shared `get_model()` helper (a thin wrapper
 around `init_chat_model`) that every demo builds on.

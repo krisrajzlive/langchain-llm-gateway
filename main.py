@@ -23,6 +23,7 @@ DEMOS = {
     "12": ("Data policy: PII redaction/masking/blocking", "demos.demo_12_pii_data_policy"),
     "13": ("Guardrail: custom blocked-topic middleware", "demos.demo_13_content_guardrail"),
     "14": ("Per-request reasoning effort (low/medium/high)", "demos.demo_14_reasoning_effort"),
+    "15": ("LLM callback lifecycle (model/tool/chain hooks)", "demos.demo_15_callbacks"),
 }
 
 
