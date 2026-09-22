@@ -31,14 +31,14 @@ service.
 ## Code layout
 
 - `gateway/` — the thin wrapper around `init_chat_model` that all demos build on.
-- `demos/practice_NN_*.py` — one self-contained script per LangChain gateway
+- `demos/do_NN_*.py` — one self-contained script per LangChain gateway
   feature. Each has a `main()` entry point and a module docstring explaining
   *why* the feature matters, not just what the code does.
 - `main.py` — CLI menu that runs any demo by number.
 
 ## Conventions
 
-- Keep each demo runnable standalone (`python demos/practice_0X_....py` or via
+- Keep each demo runnable standalone (`python demos/do_0X_....py` or via
   `main.py`), with no dependency on the others.
 - Prefer LangChain's provider-agnostic APIs (`init_chat_model`, `Runnable`
   methods) over provider-specific SDK calls, since the point of the repo is

@@ -9,21 +9,21 @@ same responsibilities a dedicated LLM gateway/proxy would own.
 
 | # | Demo | Feature |
 |---|------|---------|
-| 1 | [`demos/practice_01_basic_gateway.py`](demos/practice_01_basic_gateway.py) | Provider-agnostic init via `init_chat_model("provider:model")` (OpenAI, Hugging Face, Ollama Cloud) |
-| 2 | [`demos/practice_02_fallbacks.py`](demos/practice_02_fallbacks.py) | Automatic provider fallback with `with_fallbacks` (3-tier chain: OpenAI → Hugging Face → Ollama Cloud) |
-| 3 | [`demos/practice_03_retry_and_rate_limit.py`](demos/practice_03_retry_and_rate_limit.py) | Retries (`with_retry`) and client-side rate limiting (`InMemoryRateLimiter`) |
-| 4 | [`demos/practice_04_caching.py`](demos/practice_04_caching.py) | Response caching with `InMemoryCache`, with wire-level proof (real HTTP request count) that the cached call makes zero network calls |
-| 5 | [`demos/practice_05_streaming.py`](demos/practice_05_streaming.py) | Token streaming, uniform across providers |
-| 6 | [`demos/practice_06_structured_output.py`](demos/practice_06_structured_output.py) | Schema-constrained output with `with_structured_output` |
-| 7 | [`demos/practice_07_tool_calling.py`](demos/practice_07_tool_calling.py) | Tool calling with `bind_tools` |
-| 8 | [`demos/practice_08_configurable_alternatives.py`](demos/practice_08_configurable_alternatives.py) | Runtime-selectable model/params via `configurable_fields` / `configurable_alternatives` (OpenAI vs. Hugging Face) |
-| 9 | [`demos/practice_09_huggingface_gateway.py`](demos/practice_09_huggingface_gateway.py) | Free hosted gateway: [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers) via an OpenAI-compatible endpoint |
-| 10 | [`demos/practice_10_spend_limit.py`](demos/practice_10_spend_limit.py) | Spend limit: a budget cap enforced via a custom callback that prices token usage |
-| 11 | [`demos/practice_11_call_rate_limits.py`](demos/practice_11_call_rate_limits.py) | Rate/call limits at the agent level via `ModelCallLimitMiddleware` |
-| 12 | [`demos/practice_12_pii_data_policy.py`](demos/practice_12_pii_data_policy.py) | Data policy: PII detection with `redact`/`mask`/`block` strategies via `PIIMiddleware` |
-| 13 | [`demos/practice_13_content_guardrail.py`](demos/practice_13_content_guardrail.py) | Guardrail: a custom `AgentMiddleware` that blocks disallowed topics before the model is ever called |
-| 14 | [`demos/practice_14_reasoning_effort.py`](demos/practice_14_reasoning_effort.py) | Interactive: pick a model (`gpt-5-mini` or `gpt-oss:20b`) and a `reasoning_effort` (`low`/`medium`/`high`) and see real token-usage evidence for that combination |
-| 15 | [`demos/practice_15_callbacks.py`](demos/practice_15_callbacks.py) | LangChain's callback lifecycle (`on_chat_model_start`, `on_llm_new_token`, `on_llm_end`, `on_tool_start`/`on_tool_end`, `on_chain_start`/`on_chain_end`) -- the hook point demo 10's spend limiter is secretly built on |
+| 1 | [`demos/do_01_basic_gateway.py`](demos/do_01_basic_gateway.py) | Provider-agnostic init via `init_chat_model("provider:model")` (OpenAI, Hugging Face, Ollama Cloud) |
+| 2 | [`demos/do_02_fallbacks.py`](demos/do_02_fallbacks.py) | Automatic provider fallback with `with_fallbacks` (3-tier chain: OpenAI → Hugging Face → Ollama Cloud) |
+| 3 | [`demos/do_03_retry_and_rate_limit.py`](demos/do_03_retry_and_rate_limit.py) | Retries (`with_retry`) and client-side rate limiting (`InMemoryRateLimiter`) |
+| 4 | [`demos/do_04_caching.py`](demos/do_04_caching.py) | Response caching with `InMemoryCache`, with wire-level proof (real HTTP request count) that the cached call makes zero network calls |
+| 5 | [`demos/do_05_streaming.py`](demos/do_05_streaming.py) | Token streaming, uniform across providers |
+| 6 | [`demos/do_06_structured_output.py`](demos/do_06_structured_output.py) | Schema-constrained output with `with_structured_output` |
+| 7 | [`demos/do_07_tool_calling.py`](demos/do_07_tool_calling.py) | Tool calling with `bind_tools` |
+| 8 | [`demos/do_08_configurable_alternatives.py`](demos/do_08_configurable_alternatives.py) | Runtime-selectable model/params via `configurable_fields` / `configurable_alternatives` (OpenAI vs. Hugging Face) |
+| 9 | [`demos/do_09_huggingface_gateway.py`](demos/do_09_huggingface_gateway.py) | Free hosted gateway: [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers) via an OpenAI-compatible endpoint |
+| 10 | [`demos/do_10_spend_limit.py`](demos/do_10_spend_limit.py) | Spend limit: a budget cap enforced via a custom callback that prices token usage |
+| 11 | [`demos/do_11_call_rate_limits.py`](demos/do_11_call_rate_limits.py) | Rate/call limits at the agent level via `ModelCallLimitMiddleware` |
+| 12 | [`demos/do_12_pii_data_policy.py`](demos/do_12_pii_data_policy.py) | Data policy: PII detection with `redact`/`mask`/`block` strategies via `PIIMiddleware` |
+| 13 | [`demos/do_13_content_guardrail.py`](demos/do_13_content_guardrail.py) | Guardrail: a custom `AgentMiddleware` that blocks disallowed topics before the model is ever called |
+| 14 | [`demos/do_14_reasoning_effort.py`](demos/do_14_reasoning_effort.py) | Interactive: pick a model (`gpt-5-mini` or `gpt-oss:20b`) and a `reasoning_effort` (`low`/`medium`/`high`) and see real token-usage evidence for that combination |
+| 15 | [`demos/do_15_callbacks.py`](demos/do_15_callbacks.py) | LangChain's callback lifecycle (`on_chat_model_start`, `on_llm_new_token`, `on_llm_end`, `on_tool_start`/`on_tool_end`, `on_chain_start`/`on_chain_end`) -- the hook point demo 10's spend limiter is secretly built on |
 
 The `gateway/` package holds the shared `get_model()` helper (a thin wrapper
 around `init_chat_model`) that every demo builds on.
@@ -97,14 +97,14 @@ Or run a specific demo directly:
 
 ```bash
 python main.py 4        # runs demo 4 (caching)
-python demos/practice_05_streaming.py
+python demos/do_05_streaming.py
 ```
 
 ## Repository layout
 
 ```
 gateway/          shared init_chat_model wrapper
-demos/            one script per gateway feature (practice_01 .. practice_15)
+demos/            one script per gateway feature (do_01 .. do_15)
 main.py           CLI menu to run any demo
 requirements.txt  dependencies (installed via uv)
 ```
