@@ -9,21 +9,21 @@ same responsibilities a dedicated LLM gateway/proxy would own.
 
 | # | Demo | Feature |
 |---|------|---------|
-| 1 | [`demos/demo_01_basic_gateway.py`](demos/demo_01_basic_gateway.py) | Provider-agnostic init via `init_chat_model("provider:model")` (OpenAI, Hugging Face, Ollama Cloud) |
-| 2 | [`demos/demo_02_fallbacks.py`](demos/demo_02_fallbacks.py) | Automatic provider fallback with `with_fallbacks` (3-tier chain: OpenAI → Hugging Face → Ollama Cloud) |
-| 3 | [`demos/demo_03_retry_and_rate_limit.py`](demos/demo_03_retry_and_rate_limit.py) | Retries (`with_retry`) and client-side rate limiting (`InMemoryRateLimiter`) |
-| 4 | [`demos/demo_04_caching.py`](demos/demo_04_caching.py) | Response caching with `InMemoryCache`, with wire-level proof (real HTTP request count) that the cached call makes zero network calls |
-| 5 | [`demos/demo_05_streaming.py`](demos/demo_05_streaming.py) | Token streaming, uniform across providers |
-| 6 | [`demos/demo_06_structured_output.py`](demos/demo_06_structured_output.py) | Schema-constrained output with `with_structured_output` |
-| 7 | [`demos/demo_07_tool_calling.py`](demos/demo_07_tool_calling.py) | Tool calling with `bind_tools` |
-| 8 | [`demos/demo_08_configurable_alternatives.py`](demos/demo_08_configurable_alternatives.py) | Runtime-selectable model/params via `configurable_fields` / `configurable_alternatives` (OpenAI vs. Hugging Face) |
-| 9 | [`demos/demo_09_huggingface_gateway.py`](demos/demo_09_huggingface_gateway.py) | Free hosted gateway: [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers) via an OpenAI-compatible endpoint |
-| 10 | [`demos/demo_10_spend_limit.py`](demos/demo_10_spend_limit.py) | Spend limit: a budget cap enforced via a custom callback that prices token usage |
-| 11 | [`demos/demo_11_call_rate_limits.py`](demos/demo_11_call_rate_limits.py) | Rate/call limits at the agent level via `ModelCallLimitMiddleware` |
-| 12 | [`demos/demo_12_pii_data_policy.py`](demos/demo_12_pii_data_policy.py) | Data policy: PII detection with `redact`/`mask`/`block` strategies via `PIIMiddleware` |
-| 13 | [`demos/demo_13_content_guardrail.py`](demos/demo_13_content_guardrail.py) | Guardrail: a custom `AgentMiddleware` that blocks disallowed topics before the model is ever called |
-| 14 | [`demos/demo_14_reasoning_effort.py`](demos/demo_14_reasoning_effort.py) | Interactive: pick a model (`gpt-5-mini` or `gpt-oss:20b`) and a `reasoning_effort` (`low`/`medium`/`high`) and see real token-usage evidence for that combination |
-| 15 | [`demos/demo_15_callbacks.py`](demos/demo_15_callbacks.py) | LangChain's callback lifecycle (`on_chat_model_start`, `on_llm_new_token`, `on_llm_end`, `on_tool_start`/`on_tool_end`, `on_chain_start`/`on_chain_end`) -- the hook point demo 10's spend limiter is secretly built on |
+| 1 | [`demos/practice_01_basic_gateway.py`](demos/practice_01_basic_gateway.py) | Provider-agnostic init via `init_chat_model("provider:model")` (OpenAI, Hugging Face, Ollama Cloud) |
+| 2 | [`demos/practice_02_fallbacks.py`](demos/practice_02_fallbacks.py) | Automatic provider fallback with `with_fallbacks` (3-tier chain: OpenAI → Hugging Face → Ollama Cloud) |
+| 3 | [`demos/practice_03_retry_and_rate_limit.py`](demos/practice_03_retry_and_rate_limit.py) | Retries (`with_retry`) and client-side rate limiting (`InMemoryRateLimiter`) |
+| 4 | [`demos/practice_04_caching.py`](demos/practice_04_caching.py) | Response caching with `InMemoryCache`, with wire-level proof (real HTTP request count) that the cached call makes zero network calls |
+| 5 | [`demos/practice_05_streaming.py`](demos/practice_05_streaming.py) | Token streaming, uniform across providers |
+| 6 | [`demos/practice_06_structured_output.py`](demos/practice_06_structured_output.py) | Schema-constrained output with `with_structured_output` |
+| 7 | [`demos/practice_07_tool_calling.py`](demos/practice_07_tool_calling.py) | Tool calling with `bind_tools` |
+| 8 | [`demos/practice_08_configurable_alternatives.py`](demos/practice_08_configurable_alternatives.py) | Runtime-selectable model/params via `configurable_fields` / `configurable_alternatives` (OpenAI vs. Hugging Face) |
+| 9 | [`demos/practice_09_huggingface_gateway.py`](demos/practice_09_huggingface_gateway.py) | Free hosted gateway: [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers) via an OpenAI-compatible endpoint |
+| 10 | [`demos/practice_10_spend_limit.py`](demos/practice_10_spend_limit.py) | Spend limit: a budget cap enforced via a custom callback that prices token usage |
+| 11 | [`demos/practice_11_call_rate_limits.py`](demos/practice_11_call_rate_limits.py) | Rate/call limits at the agent level via `ModelCallLimitMiddleware` |
+| 12 | [`demos/practice_12_pii_data_policy.py`](demos/practice_12_pii_data_policy.py) | Data policy: PII detection with `redact`/`mask`/`block` strategies via `PIIMiddleware` |
+| 13 | [`demos/practice_13_content_guardrail.py`](demos/practice_13_content_guardrail.py) | Guardrail: a custom `AgentMiddleware` that blocks disallowed topics before the model is ever called |
+| 14 | [`demos/practice_14_reasoning_effort.py`](demos/practice_14_reasoning_effort.py) | Interactive: pick a model (`gpt-5-mini` or `gpt-oss:20b`) and a `reasoning_effort` (`low`/`medium`/`high`) and see real token-usage evidence for that combination |
+| 15 | [`demos/practice_15_callbacks.py`](demos/practice_15_callbacks.py) | LangChain's callback lifecycle (`on_chat_model_start`, `on_llm_new_token`, `on_llm_end`, `on_tool_start`/`on_tool_end`, `on_chain_start`/`on_chain_end`) -- the hook point demo 10's spend limiter is secretly built on |
 
 The `gateway/` package holds the shared `get_model()` helper (a thin wrapper
 around `init_chat_model`) that every demo builds on.
@@ -59,11 +59,11 @@ cp .env.example .env
 ```
 OPENAI_API_KEY=
 
-# Hugging Face Inference Providers token (free tier) - used by demos 2, 8, 9
+# Hugging Face Inference Providers token (free tier) - used by demos 1, 2, 8, 9
 HUGGINGFACE_API_KEY=
 
 # Ollama Cloud API key (free tier covers smaller models like gpt-oss:20b)
-# used as the final fallback tier in demo 2
+# used by demos 1, 2, and 14
 OLLAMA_API_KEY=
 
 # Optional: only needed if you want to swap Hugging Face/Ollama back out
@@ -97,14 +97,14 @@ Or run a specific demo directly:
 
 ```bash
 python main.py 4        # runs demo 4 (caching)
-python demos/demo_05_streaming.py
+python demos/practice_05_streaming.py
 ```
 
 ## Repository layout
 
 ```
 gateway/          shared init_chat_model wrapper
-demos/            one script per gateway feature (demo_01 .. demo_13)
+demos/            one script per gateway feature (practice_01 .. practice_15)
 main.py           CLI menu to run any demo
 requirements.txt  dependencies (installed via uv)
 ```

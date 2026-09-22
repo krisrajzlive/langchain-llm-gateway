@@ -28,7 +28,7 @@ def get_weather(city: str) -> str:
     """Get the current weather for a city."""
     return f"It is sunny and 22C in {city}."
 
-
+# Life cycle of run
 class LifecycleLoggingCallback(BaseCallbackHandler):
     """Logs every stage of a model/tool call as it happens."""
 
