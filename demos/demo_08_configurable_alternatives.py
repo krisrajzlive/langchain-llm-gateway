@@ -5,6 +5,8 @@ and let each call pick the provider, model, or temperature at invoke time
 via `.with_config(...)`, without rebuilding the chain.
 """
 
+import os
+
 from langchain_core.runnables import ConfigurableField
 
 from gateway import get_model
@@ -20,16 +22,21 @@ def main() -> None:
     ).configurable_alternatives(
         ConfigurableField(id="model"),
         default_key="openai_mini",
-        anthropic_haiku=get_model("anthropic:claude-3-5-haiku-latest"),
+        huggingface_llama=get_model(
+            "meta-llama/Llama-3.1-8B-Instruct",
+            model_provider="openai",
+            base_url="https://router.huggingface.co/v1",
+            api_key=os.environ["HUGGINGFACE_API_KEY"],
+        ),
     )
 
     default_response = model.invoke("Say hello in five words or fewer.")
     print(f"[default: openai_mini] {default_response.content}")
 
     alt_response = model.with_config(
-        configurable={"model": "anthropic_haiku", "temperature": 0.9}
+        configurable={"model": "huggingface_llama", "temperature": 0.9}
     ).invoke("Say hello in five words or fewer.")
-    print(f"[configured: anthropic_haiku, temp=0.9] {alt_response.content}")
+    print(f"[configured: huggingface_llama, temp=0.9] {alt_response.content}")
 
 
 if __name__ == "__main__":
