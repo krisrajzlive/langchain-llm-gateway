@@ -22,6 +22,7 @@ same responsibilities a dedicated LLM gateway/proxy would own.
 | 11 | [`demos/demo_11_call_rate_limits.py`](demos/demo_11_call_rate_limits.py) | Rate/call limits at the agent level via `ModelCallLimitMiddleware` |
 | 12 | [`demos/demo_12_pii_data_policy.py`](demos/demo_12_pii_data_policy.py) | Data policy: PII detection with `redact`/`mask`/`block` strategies via `PIIMiddleware` |
 | 13 | [`demos/demo_13_content_guardrail.py`](demos/demo_13_content_guardrail.py) | Guardrail: a custom `AgentMiddleware` that blocks disallowed topics before the model is ever called |
+| 14 | [`demos/demo_14_reasoning_effort.py`](demos/demo_14_reasoning_effort.py) | Per-request effort tuning on a single model via `reasoning_effort` (`low`/`medium`/`high`) on `gpt-oss:20b` via Ollama Cloud |
 
 The `gateway/` package holds the shared `get_model()` helper (a thin wrapper
 around `init_chat_model`) that every demo builds on.
@@ -32,6 +33,11 @@ rate limits, data policy, guardrails), built on `langchain.agents` and
 (`ModelCallLimitMiddleware`, `PIIMiddleware`); 10 and 13 show how to build a
 custom callback/middleware for policies LangChain doesn't ship out of the
 box (dollar-denominated budgets, arbitrary content guardrails).
+
+Demo 14 is a different kind of lever from 1/2/8/9: those route a request
+across *different* models/providers, while 14 tunes the *same* model's
+reasoning depth per request via `reasoning_effort` -- the same idea behind
+Claude Code's own model-effort picker.
 
 ## Setup
 

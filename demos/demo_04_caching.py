@@ -30,7 +30,7 @@ def _counting_handle_request(self, request):
     print(f"    [wire] real HTTP request #{wire_request_count}: {request.method} {request.url}")
     return _original_handle_request(self, request)
 
-
+# Patch the HTTP transport layer to count real wire requests
 _http_lib.HTTPTransport.handle_request = _counting_handle_request
 
 

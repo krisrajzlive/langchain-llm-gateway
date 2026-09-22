@@ -22,6 +22,7 @@ DEMOS = {
     "11": ("Call-count rate limit (ModelCallLimitMiddleware)", "demos.demo_11_call_rate_limits"),
     "12": ("Data policy: PII redaction/masking/blocking", "demos.demo_12_pii_data_policy"),
     "13": ("Guardrail: custom blocked-topic middleware", "demos.demo_13_content_guardrail"),
+    "14": ("Per-request reasoning effort (low/medium/high)", "demos.demo_14_reasoning_effort"),
 }
 
 
